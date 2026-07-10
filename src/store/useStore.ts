@@ -1,9 +1,13 @@
 import { create } from 'zustand';
-import type { CheckResult, ThemeName } from '@/types';
+import type { CheckResult, ThemeName, ColorMode } from '@/types';
 
 interface AppStore {
   theme: ThemeName;
   setTheme: (theme: ThemeName) => void;
+  
+  colorMode: ColorMode;
+  setColorMode: (mode: ColorMode) => void;
+  toggleColorMode: () => void;
   
   checkResults: CheckResult[];
   addCheckResult: (result: CheckResult) => void;
@@ -21,6 +25,17 @@ interface AppStore {
 export const useAppStore = create<AppStore>((set) => ({
   theme: 'blue',
   setTheme: (theme) => set({ theme }),
+  
+  colorMode: 'light',
+  setColorMode: (mode) => {
+    set({ colorMode: mode });
+    document.body.classList.toggle('dark', mode === 'dark');
+  },
+  toggleColorMode: () => set((state) => {
+    const newMode = state.colorMode === 'light' ? 'dark' as ColorMode : 'light' as ColorMode;
+    document.body.classList.toggle('dark', newMode === 'dark');
+    return { colorMode: newMode };
+  }),
   
   checkResults: [],
   addCheckResult: (result) => set((state) => ({

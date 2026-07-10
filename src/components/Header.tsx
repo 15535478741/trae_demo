@@ -1,4 +1,4 @@
-import { Shield, User, LogOut, Home } from 'lucide-react';
+import { Shield, User, LogOut, Home, Sun, Moon } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { themes } from '@/types';
@@ -6,7 +6,7 @@ import { useAppStore } from '@/store/useStore';
 
 export function Header() {
   const { isAuthenticated, signOut } = useAuthStore();
-  const { theme } = useAppStore();
+  const { theme, colorMode, toggleColorMode } = useAppStore();
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -34,6 +34,17 @@ export function Header() {
         </div>
         
         <nav className="flex items-center gap-4">
+          <button
+            onClick={toggleColorMode}
+            className="text-white/80 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+            title={colorMode === 'dark' ? '切换到浅色模式' : '切换到深色模式'}
+          >
+            {colorMode === 'dark' ? (
+              <Sun className="w-5 h-5" />
+            ) : (
+              <Moon className="w-5 h-5" />
+            )}
+          </button>
           {isAuthenticated ? (
             <>
               {!isHome && (

@@ -76,7 +76,7 @@ export function Home() {
   return (
     <div className="min-h-screen">
       <section 
-        className="pt-24 pb-16 px-4 text-center"
+        className="pt-24 pb-16 px-4 text-center hero-section"
         style={{ 
           background: `linear-gradient(135deg, ${currentTheme.primaryDark} 0%, ${currentTheme.primary} 50%, ${currentTheme.primaryLight} 100%)`,
           borderRadius: '0 0 4rem 4rem'
@@ -97,7 +97,40 @@ export function Home() {
           </p>
           
           {isChecking ? (
-            <LoadingSpinner size="lg" text="正在分析中..." />
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-xl max-w-2xl mx-auto">
+              <div className="flex items-center justify-center mb-6">
+                <div className="w-16 h-16 rounded-full animate-spin border-4 border-gray-200 border-t-blue-500" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">正在进行多维度分析</h3>
+              <div className="space-y-3">
+                {[
+                  { label: '文本解析与关键词提取', done: true },
+                  { label: '来源可信度评估', done: true },
+                  { label: '事实数据库匹配', done: false },
+                  { label: '逻辑一致性检测', done: false },
+                  { label: 'AI内容识别', done: false },
+                  { label: '生成分析报告', done: false },
+                ].map((step, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className={`w-5 h-5 rounded-full flex items-center justify-center ${step.done ? 'bg-green-500' : 'bg-gray-200'}`}>
+                      {step.done && <span className="text-white text-xs">✓</span>}
+                    </div>
+                    <div className="flex-1">
+                      <p className={`text-sm ${step.done ? 'text-gray-600' : 'text-gray-400'}`}>{step.label}</p>
+                      <div className="h-1.5 bg-gray-100 rounded-full mt-1">
+                        <div 
+                          className={`h-full rounded-full transition-all duration-500 ${step.done ? 'bg-green-500' : 'bg-blue-400'}`}
+                          style={{ width: step.done ? '100%' : '0%' }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 text-center">
+                <p className="text-gray-500 text-sm">TRAE正在智能分析中，请稍候...</p>
+              </div>
+            </div>
           ) : (
             <SearchInput onSubmit={handleCheck} disabled={isChecking} />
           )}

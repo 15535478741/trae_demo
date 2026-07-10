@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Lock, Palette, AlertCircle, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Lock, Palette, AlertCircle, CheckCircle, Sun, Moon } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 import { ThemeSelector } from '@/components/ThemeSelector';
@@ -8,7 +8,7 @@ import { useAppStore } from '@/store/useStore';
 
 export function Settings() {
   const { updatePassword, error, loading, clearError } = useAuthStore();
-  const { theme } = useAppStore();
+  const { theme, colorMode, toggleColorMode } = useAppStore();
   const navigate = useNavigate();
   
   const currentTheme = themes[theme];
@@ -69,6 +69,36 @@ export function Settings() {
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="bg-white rounded-2xl p-6 shadow-md">
             <ThemeSelector />
+          </div>
+          
+          <div className="bg-white rounded-2xl p-6 shadow-md">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Sun className="w-5 h-5" style={{ color: currentTheme.primary }} />
+                <h2 className="text-lg font-semibold text-gray-800">深色模式</h2>
+              </div>
+              <button
+                onClick={toggleColorMode}
+                className={`w-14 h-7 rounded-full transition-all duration-300 relative ${
+                  colorMode === 'dark' ? 'bg-gray-800' : 'bg-gray-300'
+                }`}
+              >
+                <div
+                  className={`absolute top-1 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    colorMode === 'dark' ? 'left-8 bg-gray-600' : 'left-1 bg-white'
+                  }`}
+                >
+                  {colorMode === 'dark' ? (
+                    <Moon className="w-3 h-3 text-yellow-400" />
+                  ) : (
+                    <Sun className="w-3 h-3 text-yellow-500" />
+                  )}
+                </div>
+              </button>
+            </div>
+            <p className="text-gray-500 text-sm mt-2">
+              {colorMode === 'dark' ? '已开启深色模式' : '已开启浅色模式'}
+            </p>
           </div>
           
           <div className="bg-white rounded-2xl p-6 shadow-md">

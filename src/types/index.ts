@@ -36,6 +36,7 @@ export interface CheckRequest {
 }
 
 export type ThemeName = 'blue' | 'green' | 'purple' | 'orange' | 'pink';
+export type ColorMode = 'light' | 'dark';
 
 export interface ThemeConfig {
   name: ThemeName;
@@ -130,6 +131,7 @@ export interface AuthState {
 
 export interface AppState {
   theme: ThemeName;
+  colorMode: ColorMode;
   checkResults: CheckResult[];
   currentResult: CheckResult | null;
   isChecking: boolean;

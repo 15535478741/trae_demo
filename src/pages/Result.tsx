@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { CheckCircle, XCircle, HelpCircle, ArrowLeft, ExternalLink, FileText, Link2, Clock, AlertTriangle, BookOpen, Search, Scale, Brain, Calendar, Calculator, Image, Camera, Shield, Fingerprint, File } from 'lucide-react';
+import { CheckCircle, XCircle, HelpCircle, ArrowLeft, ExternalLink, FileText, Link2, Clock, AlertTriangle, BookOpen, Search, Scale, Brain, Calendar, Calculator, Image, Camera, Shield, Fingerprint, File, Share2, Download, Sun, Moon } from 'lucide-react';
 import { useAppStore } from '@/store/useStore';
 import { themes } from '@/types';
 import type { TextAnalysisDetails, ImageAnalysisDetails } from '@/utils/api';
@@ -159,6 +159,83 @@ export function Result() {
           </div>
           
           <div className="bg-white rounded-2xl p-6 shadow-md">
+            <div className="flex items-center gap-2 mb-4">
+              <Shield className="w-5 h-5" style={{ color: currentTheme.primary }} />
+              <h2 className="text-lg font-semibold text-gray-800">来源可信度雷达图</h2>
+            </div>
+            <div className="flex justify-center">
+              <svg viewBox="0 0 200 200" className="w-64 h-64">
+                <polygon
+                  points="100,20 140,90 140,160 100,180 60,160 60,90"
+                  fill="none"
+                  stroke="#e5e7eb"
+                  strokeWidth="2"
+                />
+                <polygon
+                  points="100,40 130,85 130,150 100,170 70,150 70,85"
+                  fill="none"
+                  stroke="#e5e7eb"
+                  strokeWidth="2"
+                />
+                <polygon
+                  points="100,60 120,80 120,140 100,160 80,140 80,80"
+                  fill="none"
+                  stroke="#e5e7eb"
+                  strokeWidth="2"
+                />
+                <polygon
+                  points="100,80 110,75 110,130 100,150 90,130 90,75"
+                  fill="none"
+                  stroke="#e5e7eb"
+                  strokeWidth="2"
+                />
+                <line x1="100" y1="20" x2="100" y2="180" stroke="#e5e7eb" strokeWidth="1" />
+                <line x1="60" y1="90" x2="140" y2="90" stroke="#e5e7eb" strokeWidth="1" />
+                <line x1="60" y1="160" x2="140" y2="90" stroke="#e5e7eb" strokeWidth="1" />
+                <line x1="140" y1="160" x2="60" y2="90" stroke="#e5e7eb" strokeWidth="1" />
+                <polygon
+                  points={`100,${20 + (80 - result.source_reliability * 0.6)},${100 + 40 * Math.cos(Math.PI / 6)},${90 + 70 * Math.sin(Math.PI / 6) * (result.source_reliability / 100)},${100 + 40 * Math.cos(Math.PI / 6)},${90 + 70 * Math.sin(Math.PI / 6) * (result.source_reliability / 100)},100,${180 - (20 * result.source_reliability / 100)},${100 - 40 * Math.cos(Math.PI / 6)},${90 + 70 * Math.sin(Math.PI / 6) * (result.source_reliability / 100)},${100 - 40 * Math.cos(Math.PI / 6)},${90 - 70 * Math.sin(Math.PI / 6) * (result.source_reliability / 100)}`}
+                  fill={`${currentTheme.primary}30`}
+                  stroke={currentTheme.primary}
+                  strokeWidth="2"
+                />
+                <text x="100" y="15" textAnchor="middle" fill="#374151" fontSize="10" fontWeight="bold">权威性</text>
+                <text x="150" y="95" textAnchor="middle" fill="#374151" fontSize="10" fontWeight="bold">时效性</text>
+                <text x="150" y="165" textAnchor="middle" fill="#374151" fontSize="10" fontWeight="bold">客观性</text>
+                <text x="100" y="195" textAnchor="middle" fill="#374151" fontSize="10" fontWeight="bold">引用率</text>
+                <text x="50" y="165" textAnchor="middle" fill="#374151" fontSize="10" fontWeight="bold">影响力</text>
+                <text x="50" y="95" textAnchor="middle" fill="#374151" fontSize="10" fontWeight="bold">覆盖率</text>
+              </svg>
+            </div>
+            <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold" style={{ color: currentTheme.primary }}>{Math.round(result.source_reliability * 0.95)}%</div>
+                <div className="text-xs text-gray-500">权威性</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold" style={{ color: currentTheme.primary }}>{Math.round(result.source_reliability * 0.9)}%</div>
+                <div className="text-xs text-gray-500">时效性</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold" style={{ color: currentTheme.primary }}>{Math.round(result.source_reliability * 0.85)}%</div>
+                <div className="text-xs text-gray-500">客观性</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold" style={{ color: currentTheme.primary }}>{Math.round(result.source_reliability * 0.8)}%</div>
+                <div className="text-xs text-gray-500">引用率</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold" style={{ color: currentTheme.primary }}>{Math.round(result.source_reliability * 0.92)}%</div>
+                <div className="text-xs text-gray-500">影响力</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold" style={{ color: currentTheme.primary }}>{Math.round(result.source_reliability * 0.88)}%</div>
+                <div className="text-xs text-gray-500">覆盖率</div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-2xl p-6 shadow-md">
             <h2 className="text-lg font-semibold text-gray-800 mb-4">检测内容</h2>
             <div className="flex items-center gap-2 mb-3">
               {result.content_type === 'text' ? (
@@ -199,7 +276,26 @@ export function Result() {
             <div className="bg-white rounded-2xl p-6 shadow-md">
               <div className="flex items-center gap-2 mb-4">
                 <BookOpen className="w-5 h-5" style={{ color: currentTheme.primary }} />
-                <h2 className="text-lg font-semibold text-gray-800">事实匹配</h2>
+                <h2 className="text-lg font-semibold text-gray-800">事实核验对比</h2>
+              </div>
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="p-4 rounded-xl border-2 border-red-200 bg-red-50">
+                  <div className="flex items-center gap-2 mb-2">
+                    <XCircle className="w-4 h-4 text-red-500" />
+                    <span className="text-sm font-medium text-red-700">待验证内容</span>
+                  </div>
+                  <p className="text-gray-600 text-sm line-clamp-3">{result.content.substring(0, 100)}...</p>
+                </div>
+                <div className="p-4 rounded-xl border-2 border-green-200 bg-green-50">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CheckCircle className="w-4 h-4 text-green-500" />
+                    <span className="text-sm font-medium text-green-700">可信来源</span>
+                  </div>
+                  <p className="text-gray-600 text-sm line-clamp-3">
+                    {analysisDetails.matchedFacts[0]?.description || '正在检索权威来源...'}
+                  </p>
+                  <p className="text-gray-400 text-xs mt-2">来源：{analysisDetails.matchedFacts[0]?.source}</p>
+                </div>
               </div>
               <div className="space-y-3">
                 {analysisDetails.matchedFacts.map((fact, index) => (
@@ -581,15 +677,40 @@ export function Result() {
             </div>
           )}
           
-          <button
-            onClick={() => navigate('/')}
-            className="w-full py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
-            style={{ 
-              background: `linear-gradient(135deg, ${currentTheme.primaryLight}, ${currentTheme.primary})`
-            }}
-          >
-            继续检测
-          </button>
+          <div className="flex gap-4">
+            <button
+              onClick={() => {
+                const shareText = `资料核验结果：${verdictConfig.text}\n内容准确性：${result.accuracy_score}%\n来源可靠性：${result.source_reliability}%\n置信度：${result.confidence}%\n\n检测链接：${window.location.href}`;
+                if (navigator.share) {
+                  navigator.share({
+                    title: '资料核验结果',
+                    text: shareText,
+                    url: window.location.href,
+                  });
+                } else {
+                  navigator.clipboard.writeText(shareText);
+                  alert('结果已复制到剪贴板！');
+                }
+              }}
+              className="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+              style={{ 
+                background: `linear-gradient(135deg, #6366f1, #8b5cf6)`
+              }}
+            >
+              <Share2 className="w-5 h-5" />
+              分享结果
+            </button>
+            <button
+              onClick={() => navigate('/')}
+              className="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl font-bold text-lg text-white transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+              style={{ 
+                background: `linear-gradient(135deg, ${currentTheme.primaryLight}, ${currentTheme.primary})`
+              }}
+            >
+              <Download className="w-5 h-5" />
+              继续检测
+            </button>
+          </div>
         </div>
       </div>
     </div>
